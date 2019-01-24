@@ -1,0 +1,17 @@
+This is a Futurestay customized version of Apache fs_log4php. The main 
+difference is Futurestay has added AWS specific appenders such as
+LoggerAppenderDynamoDB and LoggerAppenderKinesis.
+
+The original README is as follows:
+
+Apache fs_log4php is a versatile logging framework for PHP.
+
+Apache fs_log4php is a project at the Apache Software Foundation (ASF).
+
+Project web site: 
+http://logging.apache.org/log4php/
+
+Project Status
+==============
+Apache fs_log4php is a sub project of the Apache Logging Services project. 
+Apache fs_log4php graduated from the Apache Incubator in March 2010.
