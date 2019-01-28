@@ -27,11 +27,11 @@
  *   ASW_KEY    - read from ~/.aws/credentials
  *   tableName  - read from config file
  *   profile    - read from config file
- *   region     - read from config file   # set to empty string if using local instance of DynamoDB
+ *   region     - read from config file
  *   version    - read from config file
  *
  * @version $Revision$
- * @package fs_log4php
+ * @package log4php
  * @subpackage appenders
  * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @link http://logging.apache.org/log4php/docs/appenders/DynamoDB.html Appender documentation (someday!)
@@ -45,10 +45,10 @@ use Aws\DynamoDb\Marshaler;
 class LoggerAppenderDynamoDB extends LoggerAppender
 {
 
-    /**
-     * The DynamoDB tableName to send to .
-     * @var resource
-     */
+	/**
+	 * The DynamoDB tableName to send to .
+	 * @var resource
+	 */
     protected $tableName;
 
     /**
@@ -75,10 +75,10 @@ class LoggerAppenderDynamoDB extends LoggerAppender
      */
     protected $version;
 
-    /**
-     * The DynamoDB Client.
-     * @var resource
-     */
+	/**
+	 * The DynamoDB Client.
+	 * @var resource
+	 */
     private $DynamoDBClient;
 
     public function activateOptions() {
@@ -87,19 +87,22 @@ class LoggerAppenderDynamoDB extends LoggerAppender
             $this->closed = true;
             return;
         }
-
         if (empty($this->profile)) {
             $this->warn("Required parameter 'profile' not set. Closing appender.");
             $this->closed = true;
             return;
         }
-
         if (empty($this->region)) {
             $this->warn("Required parameter 'region' not set. Closing appender.");
             $this->closed = true;
             return;
         }
-
+        // This is only required for DynamoDB Local
+/*        if (empty($this->endpoint)) {
+            $this->warn("Required parameter 'endpoint' not set. Closing appender.");
+            $this->closed = true;
+            return;
+        }*/
         if (empty($this->version)) {
             $this->warn("Required parameter 'version' not set. Closing appender.");
             $this->closed = true;
@@ -120,6 +123,15 @@ class LoggerAppenderDynamoDB extends LoggerAppender
             $this->error($e->getMessage());
             return ;
         }
+
+/*
+        try {
+            $res            = $this->DynamoDBClient->describeStream(['tableName' => $this->tableName]);
+            $this->shardIds = $res->search('StreamDescription.Shards[].ShardId');
+        } catch (Exception $e) {
+            $this->error($e->getMessage());
+            return ;        }
+*/
 
         if ($this->requiresLayout and ! $this->layout) {
             $this->layout = $this->getDefaultLayout();
@@ -207,7 +219,7 @@ class LoggerAppenderDynamoDB extends LoggerAppender
 
     public function append(LoggerLoggingEvent $event)
     {
-        $res = ''; // for scoping issues
+        $res = '';
 
         try {
             $logData = $this->layout->format($event);

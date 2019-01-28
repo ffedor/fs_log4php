@@ -15,21 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @package fs_log4php
+ * @package log4php
  */
 
 # TODO Update this comment block
 /**
- * A simple JSON layout.
+ * A simple layout.
  *
  * Returns the log statement in a format consisting of the
- *  { "timestamp:"$timestamp", "level": "$level", "message":"$message" ] 
+ * <b>level</b>, followed by " - " and then the <b>message</b>. 
+ *
+ * For example the following php and properties files
+ * 
+ * {@example ../../examples/php/layout_simple.php 19}<br>
+ * 
+ * {@example ../../examples/resources/layout_simple.properties 18}<br>
+ *
+ * would result in:
+ * 
+ * <samp>INFO - Hello World!</samp>
  *
  * @version $Revision$
- * @package fs_log4php
+ * @package log4php
  * @subpackage layouts
  */  
-class LoggerLayoutSimpleJSON extends LoggerLayout {
+class LoggerLayoutDynamoDbJSON extends LoggerLayout {
 	/**
 	 * Returns the the message in the log statement as an
 	 *
