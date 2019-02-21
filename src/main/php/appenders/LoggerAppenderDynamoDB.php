@@ -29,6 +29,7 @@
  *   profile    - read from config file
  *   region     - read from config file
  *   version    - read from config file
+ *   endpoint   - read from config file - leave empty if sending data to cloud
  *
  * @version $Revision$
  * @package log4php
@@ -97,12 +98,6 @@ class LoggerAppenderDynamoDB extends LoggerAppender
             $this->closed = true;
             return;
         }
-        // This is only required for DynamoDB Local
-/*        if (empty($this->endpoint)) {
-            $this->warn("Required parameter 'endpoint' not set. Closing appender.");
-            $this->closed = true;
-            return;
-        }*/
         if (empty($this->version)) {
             $this->warn("Required parameter 'version' not set. Closing appender.");
             $this->closed = true;
@@ -123,15 +118,6 @@ class LoggerAppenderDynamoDB extends LoggerAppender
             $this->error($e->getMessage());
             return ;
         }
-
-/*
-        try {
-            $res            = $this->DynamoDBClient->describeStream(['tableName' => $this->tableName]);
-            $this->shardIds = $res->search('StreamDescription.Shards[].ShardId');
-        } catch (Exception $e) {
-            $this->error($e->getMessage());
-            return ;        }
-*/
 
         if ($this->requiresLayout and ! $this->layout) {
             $this->layout = $this->getDefaultLayout();
